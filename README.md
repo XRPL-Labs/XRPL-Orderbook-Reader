@@ -1,4 +1,4 @@
-# XRPL Orderbook Reader
+# XRPL Orderbook Reader [![npm version](https://badge.fury.io/js/xrpl-orderbook-reader.svg)](https://www.npmjs.com/xrpl-orderbook-reader)
 
 This repository takes XRPL Orderbook (`book_offers`) datasets and requested volume to
 exchange and calculates the effective exchange rates based on the requested and available liquidity.
