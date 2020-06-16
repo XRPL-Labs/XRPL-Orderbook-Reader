@@ -9,7 +9,7 @@
     "clean": "rm -rf dist",
     "build": "tsc",
     "watch": "tsc -w",
-    "dev": "clear; npm run build; DEBUG=orderbook* nodemon dist/samples/Full.js",
+    "dev": "clear; npm run build; DEBUG=orderbook* nodemon dist/samples/Sample.js",
     "test": "jest --ci --verbose",
     "lint": "tslint -p ./"
   },

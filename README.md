@@ -16,3 +16,13 @@ Please note that the Params require a `send` method to be present. The `send` me
 to the Params should take an object with a `command` for rippled and return a `Promise`
 that will resolve to contain requested order book lines. This has been tested with
 [rippled-ws-client](https://www.npmjs.com/package/rippled-ws-client)
+
+## How to...
+
+##### Test:
+
+`npm run test`
+
+##### Run development code:
+
+`npm run dev` (Compiles and runs `/samples/Sample.ts`)
