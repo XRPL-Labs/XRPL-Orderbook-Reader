@@ -2,8 +2,8 @@
   "name": "xrpl-orderbook-reader",
   "version": "0.1.0",
   "description": "Parse XRPL Order Book results into effective liquidity based exchange prices",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run lint && npm run test && npm run build",
     "clean": "rm -rf dist",
