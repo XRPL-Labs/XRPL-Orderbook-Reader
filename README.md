@@ -17,6 +17,10 @@ to the Params should take an object with a `command` for rippled and return a `P
 that will resolve to contain requested order book lines. This has been tested with
 [rippled-ws-client](https://www.npmjs.com/package/rippled-ws-client)
 
+## Sample in JS (not TS) environment(s):
+
+Please see `/samples/PlainSample.js`
+
 ## How to...
 
 ##### Test:
