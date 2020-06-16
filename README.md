@@ -7,6 +7,8 @@ Optionally certain checks can be specified (eg. `book_offers` on the other side 
 to warn for limited (percentage) liquidity on the requested side, and possibly other side
 of the order book.
 
+**Typescript 3.8+ is required**
+
 ## How to use:
 For now: See `samples/Sample.ts`
 
