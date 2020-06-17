@@ -17,6 +17,7 @@ export enum Errors {
 
 export interface Options {
   verboseBookData?: boolean
+  timeoutSeconds?: number // Default: 60
   rates?: RatesInCurrency
   maxSpreadPercentage?: number
   maxSlippagePercentage?: number

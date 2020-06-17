@@ -144,7 +144,21 @@ class LiquidityCheck {
   }
 
   async get (): Promise<LiquidityCheckResult> {
-    const bookData = await Promise.all([this.Book, this.BookReverse])
+    let timeout
+    const bookData = await Promise.race([
+      new Promise(resolve => {
+        const ms = this.Params.options?.timeoutSeconds || 60
+        timeout = setTimeout(resolve, ms * 1000)
+      }),
+      Promise.all([this.Book, this.BookReverse])
+    ])
+
+    if (!Array.isArray(bookData)) {
+      throw new Error('Timeout fetching order book data')
+    } else if (timeout) {
+      clearTimeout(timeout)
+    }
+
     const books = await Promise.all([
       LiquidityParser({
         books: [bookData[0]],

@@ -93,4 +93,18 @@ describe('XRPL Orderbook Reader', () => {
 
     return expect(Liquidity.errors).toContain(Errors.INSUFFICIENT_AMOUNT_OF_OFFERS)
   })
+
+  it('should throw timeout error', async () => {
+    const Check = new LiquidityCheck({
+      trade,
+      options: {
+        timeoutSeconds: 0.0001
+      },
+      method: Connection.send
+    })
+
+    return expect(new Promise(resolve => {
+      resolve(Check.get())
+    })).rejects.toThrow('Timeout fetching order book data')
+  })
 })

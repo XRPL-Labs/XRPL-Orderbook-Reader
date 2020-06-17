@@ -41,6 +41,7 @@ const main = async () => {
       // }
     },
     options: {
+      timeoutSeconds: 1,
       minOfferCount: 3,
       includeBookData: false,
       verboseBookData: false,
