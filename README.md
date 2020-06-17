@@ -12,6 +12,8 @@ of the order book.
 ## How to use:
 For now: See `samples/Sample.ts`
 
+Available options [here](https://github.com/XRPL-Labs/XRPL-Orderbook-Reader/blob/38be170007366095bd078713ecbb65684420539d/src/types/Reader.ts#L17).
+
 Please note that the Params require a `send` method to be present. The `send` method passed
 to the Params should take an object with a `command` for rippled and return a `Promise`
 that will resolve to contain requested order book lines. This has been tested with
