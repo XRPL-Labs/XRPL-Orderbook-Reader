@@ -26,9 +26,9 @@ const main = async () => {
       from: {
         currency: 'XRP'
       },
-      amount: 4500,
+      amount: 500,
       to: {
-        currency: 'USD',
+        currency: 'EUR',
         issuer: 'rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq'
       }
       // to: {
@@ -41,7 +41,7 @@ const main = async () => {
       // }
     },
     options: {
-      timeoutSeconds: 1,
+      timeoutSeconds: 3,
       minOfferCount: 3,
       includeBookData: false,
       verboseBookData: false,
@@ -63,6 +63,11 @@ const main = async () => {
   // log('rate', Liquidity.rate)
   // log('safe', Liquidity.safe)
   // log('errors', Liquidity.errors)
+
+  /**
+   * Please note: uses console.table instead of
+   * Debug (log), as Debug is missing table output
+   */
   if (typeof Liquidity.books !== 'undefined') {
     console.table(Liquidity.books[0])
     console.table(Liquidity.books[1])
