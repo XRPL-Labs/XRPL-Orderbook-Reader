@@ -68,6 +68,17 @@ const main = async () => {
     console.table(Liquidity.books[1])
   }
 
+  /**
+   * Sample: get new data every 4 seconds for higher
+   * requested amount to exchange.
+   */
+  // setInterval(async () => {
+  //   Params.trade.amount += 1000
+  //   log(`Getting new Liquidity Data for (trade amount)`, Params.trade.amount)
+  //   Check.refresh(Params)
+  //   log(await Check.get())
+  // }, 4000)
+
   Connection.close()
 }
 

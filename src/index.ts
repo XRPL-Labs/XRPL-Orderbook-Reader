@@ -30,13 +30,22 @@ class LiquidityCheck {
   constructor (Params: LiquidityCheckParams) {
     // log('called')
     this.Params = Params
-    this.Book = this.fetchBooks(true)
-    this.BookReverse = this.fetchBooks(false)
+
+    this.Book = this.fetchBook(true)
+    this.BookReverse = this.fetchBook(false)
 
     return this
   }
 
-  async fetchBooks (requestedDirection: boolean = true): Promise<Offer[]> {
+  refresh (Params?: LiquidityCheckParams): void {
+    if (Params) {
+      this.Params = Params
+    }
+    this.Book = this.fetchBook(true)
+    this.BookReverse = this.fetchBook(false)
+  }
+
+  async fetchBook (requestedDirection: boolean = true): Promise<Offer[]> {
     log(`Get book_offers for ${requestedDirection ? 'requested' : 'reversed'} direction`)
     const book = await this.Params.method<BookOffersResponse>({
       command: 'book_offers',

@@ -12,6 +12,31 @@ of the order book.
 ## How to use:
 For now: See `samples/Sample.ts`
 
+### Call & get results
+
+Please create one `LiquidityCheck` instance per pair (from/to).
+
+```
+  const Lc = new LiquidityCheck(Params)
+  const Lq = await Lc.get()
+  log(Lq.rate)
+```
+
+You can update Params and fetch new data, and get the results based on the new data
+with the `refresh` method. When called without input parameter (`refresh()`) existing
+Params will be used based on fresh order book information. If a new Params object is
+provided, the entire instance will be updated.
+
+```
+  // Lc instance already exists
+  // const Lc = new LiquidityCheck(Params)
+  
+  Params.trade.amount += 1000
+
+  Lc.refresh(Params)
+  const newLq = await Lc.get()
+```
+
 Available options [here](https://github.com/XRPL-Labs/XRPL-Orderbook-Reader/blob/38be170007366095bd078713ecbb65684420539d/src/types/Reader.ts#L17).
 
 Please note that the Params require a `send` method to be present. The `send` method passed
