@@ -79,4 +79,18 @@ describe('XRPL Orderbook Reader', () => {
       Errors.REVERSE_LIQUIDITY_NOT_AVAILABLE
     ])
   })
+
+  it('should error out at insufficient offers', async () => {
+    const Check = new LiquidityCheck({
+      trade,
+      options: {
+        ...options,
+        minOfferCount: 999
+      },
+      method: Connection.send
+    })
+    const Liquidity = await Check.get()
+
+    return expect(Liquidity.errors).toContain(Errors.INSUFFICIENT_AMOUNT_OF_OFFERS)
+  })
 })

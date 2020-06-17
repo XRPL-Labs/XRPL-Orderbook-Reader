@@ -41,6 +41,7 @@ const main = async () => {
       // }
     },
     options: {
+      minOfferCount: 3,
       includeBookData: false,
       verboseBookData: false,
       rates: RatesInCurrency.to,
