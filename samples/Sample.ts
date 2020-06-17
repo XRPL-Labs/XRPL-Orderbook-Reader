@@ -26,7 +26,7 @@ const main = async () => {
       from: {
         currency: 'XRP'
       },
-      amount: 1000000,
+      amount: 4500,
       to: {
         currency: 'USD',
         issuer: 'rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq'
