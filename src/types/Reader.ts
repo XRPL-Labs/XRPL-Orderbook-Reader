@@ -16,14 +16,14 @@ export enum Errors {
 }
 
 export interface Options {
-  verboseBookData?: boolean
   timeoutSeconds?: number // Default: 60
+  includeBookData?: boolean // Default: false
+  verboseBookData?: boolean // Default: false
   rates?: RatesInCurrency
   maxSpreadPercentage?: number
   maxSlippagePercentage?: number
   maxSlippagePercentageReverse?: number
-  maxBookLines?: number
-  includeBookData?: boolean
+  maxBookLines?: number // Default: 500
   minOfferCount?: number
 }
 
