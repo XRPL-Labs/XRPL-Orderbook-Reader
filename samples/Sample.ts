@@ -13,9 +13,6 @@ const main = async () => {
    * XRPL Connection
    */
   const Connection = await new Client('wss://xrpl.ws')
-
-  // Connection.on('ledger', (l: any) => log(`XRPL Ledger`, l))
-  // Connection.on('state', (s: any) => log(`XRPL State`, s))
   Connection.on('error', (e: Error | string) => log(`XRPL Error`, e))
 
   /**
@@ -31,24 +28,16 @@ const main = async () => {
         currency: 'EUR',
         issuer: 'rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq'
       }
-      // to: {
-      //   currency: 'USD',
-      //   issuer: 'rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B'
-      // }
-      // to: {
-      //   currency: '534F4C4F00000000000000000000000000000000',
-      //   issuer: 'rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz'A
-      // }
     },
     options: {
-      timeoutSeconds: 3,
-      includeBookData: false,
-      verboseBookData: false,
       rates: RatesInCurrency.to,
-      maxSpreadPercentage: 2,
+      timeoutSeconds: 10,
+      maxSpreadPercentage: 4,
       maxSlippagePercentage: 3,
-      maxSlippagePercentageReverse: 4,
-      maxBookLines: 500
+      maxSlippagePercentageReverse: 3,
+      // maxBookLines: 500,
+      // includeBookData: true,
+      // verboseBookData: true,
     },
     method: Connection.send
   }
