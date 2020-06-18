@@ -100,10 +100,6 @@ class LiquidityCheck {
       errors.push(Errors.REVERSE_LIQUIDITY_NOT_AVAILABLE)
     }
 
-    if (this.Params.options?.minOfferCount && books[0].length < this.Params.options?.minOfferCount) {
-      errors.push(Errors.INSUFFICIENT_AMOUNT_OF_OFFERS)
-    }
-
     if (this.Params.options?.maxSpreadPercentage) {
       const spread = new BigNumber(1).minus(startRate.dividedBy(startRateReverse)).abs().times(100)
       logRates({

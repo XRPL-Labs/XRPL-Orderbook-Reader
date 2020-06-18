@@ -42,7 +42,6 @@ const main = async () => {
     },
     options: {
       timeoutSeconds: 3,
-      minOfferCount: 3,
       includeBookData: false,
       verboseBookData: false,
       rates: RatesInCurrency.to,

@@ -11,8 +11,7 @@ export enum Errors {
   REVERSE_LIQUIDITY_NOT_AVAILABLE = 'REVERSE_LIQUIDITY_NOT_AVAILABLE',
   MAX_SPREAD_EXCEEDED = 'MAX_SPREAD_EXCEEDED',
   MAX_SLIPPAGE_EXCEEDED = 'MAX_SLIPPAGE_EXCEEDED',
-  MAX_REVERSE_SLIPPAGE_EXCEEDED = 'MAX_REVERSE_SLIPPAGE_EXCEEDED',
-  INSUFFICIENT_AMOUNT_OF_OFFERS = 'INSUFFICIENT_AMOUNT_OF_OFFERS'
+  MAX_REVERSE_SLIPPAGE_EXCEEDED = 'MAX_REVERSE_SLIPPAGE_EXCEEDED'
 }
 
 export interface Options {
@@ -24,7 +23,6 @@ export interface Options {
   maxSlippagePercentage?: number
   maxSlippagePercentageReverse?: number
   maxBookLines?: number // Default: 500
-  minOfferCount?: number
 }
 
 export interface Params {
