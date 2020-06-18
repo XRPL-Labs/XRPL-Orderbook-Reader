@@ -66,6 +66,16 @@ class LiquidityCheck {
   detectErrors (books: Array<ParseResult[] | ParseResultVerbose[]>): Array<Errors> {
     const errors: Array<Errors> = []
 
+    if (books[0].length < 1) {
+      errors.push(Errors.REQUESTED_LIQUIDITY_NOT_AVAILABLE)
+      return errors
+    }
+
+    if (books[1].length < 1) {
+      errors.push(Errors.REVERSE_LIQUIDITY_NOT_AVAILABLE)
+      return errors
+    }
+
     const tradeAmount = new BigNumber(this.Params.trade.amount)
     const book0Amount = new BigNumber(books[0].filter(l => l._Capped !== undefined).slice(-1)[0]._I_Spend_Capped)
     const book1Amount = new BigNumber(books[1].filter(l => l._Capped !== undefined).slice(-1)[0]._I_Get_Capped)

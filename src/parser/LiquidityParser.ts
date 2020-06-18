@@ -53,6 +53,9 @@ function parseAmount (amount?: Amount | string): BigNumber | undefined {
 
 function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResultVerbose[] {
   const bookData = ParserData.books[0]
+  if (bookData.length < 1) {
+    return []
+  }
 
   /**
    * Determine Book Direction.
