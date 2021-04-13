@@ -162,7 +162,7 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
     }
 
     if (_Capped !== undefined) {
-      // _CumulativeRate_Cap = Math.round(_GetsSumCapped / _PaysSumCapped * Math.pow(10, 6)) / Math.pow(10, 6)
+      // _CumulativeRate_Cap = _GetsSumCapped / _PaysSumCapped
       _CumulativeRate_Cap = _GetsSumCapped.dividedBy(_PaysSumCapped)
     }
 
@@ -180,8 +180,8 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
       _I_Get: _PaysSum,
       _ExchangeRate: _PaysEffective === 0
         ? undefined
-        : Math.round(_GetsEffective / _PaysEffective * Math.pow(10, 6)) / Math.pow(10, 6),
-      _CumulativeRate: Math.round(_GetsSum / _PaysSum * Math.pow(10, 6)) / Math.pow(10, 6),
+        : _GetsEffective / _PaysEffective,
+      _CumulativeRate: _GetsSum / _PaysSum,
       _I_Spend_Capped: _GetsSumCapped?.toNumber(),
       _I_Get_Capped: _PaysSumCapped?.toNumber(),
       _CumulativeRate_Cap: _CumulativeRate_Cap?.toNumber(),
@@ -190,13 +190,13 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
 
     if (ParserData.options?.rates?.toLowerCase().trim() === 'to') {
       if (!isNaN(b._ExchangeRate)) {
-        b._ExchangeRate = Math.round(1 / b._ExchangeRate * Math.pow(10, 6)) / Math.pow(10, 6)
+        b._ExchangeRate = 1 / b._ExchangeRate
       }
       if (!isNaN(b._CumulativeRate_Cap)) {
-        b._CumulativeRate_Cap = Math.round(1 / b._CumulativeRate_Cap * Math.pow(10, 6)) / Math.pow(10, 6)
+        b._CumulativeRate_Cap = 1 / b._CumulativeRate_Cap
       }
       if (!isNaN(b._CumulativeRate)) {
-        b._CumulativeRate = Math.round(1 / b._CumulativeRate * Math.pow(10, 6)) / Math.pow(10, 6)
+        b._CumulativeRate = 1 / b._CumulativeRate
       }
     }
 
