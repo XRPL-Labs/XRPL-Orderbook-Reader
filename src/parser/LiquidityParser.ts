@@ -95,6 +95,7 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
 
   const tradeAmount = new BigNumber(ParserData.trade.amount)
 
+  let linesPresent = 0
   const data: ParseResultVerbose[] = bookData.map((offer: Offer) => {
     return Object.assign(<ParseResultVerbose>{}, {
       account: offer.Account,
@@ -104,6 +105,20 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
       TakerPaysFunded: parseAmount(offer.taker_pays_funded),
       Funds: parseAmount(offer.owner_funds)
     })
+  }).filter(a => {
+    const allowed = linesPresent > 0 || (
+      (a.TakerGetsFunded === undefined || (a.TakerGetsFunded && a.TakerGetsFunded.toNumber() > 0))
+      &&
+      (a.TakerPaysFunded === undefined || (a.TakerPaysFunded && a.TakerPaysFunded.toNumber() > 0))
+    )
+
+    if (allowed) {
+      linesPresent++
+    } else {
+      // log({suppressed: a})
+    }
+
+    return allowed
   }).reduce((a: ParseResultVerbose[], b: ParseResultVerbose, i: number) => {
     const _PaysEffective = b.TakerGetsFunded === undefined
       ? Number(b.TakerGets)
@@ -173,35 +188,41 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
       _Capped = undefined
     }
 
-    Object.assign(b, {
-      // _PaysEffective,
-      // _GetsEffective,
-      _I_Spend: _GetsSum,
-      _I_Get: _PaysSum,
-      _ExchangeRate: _PaysEffective === 0
-        ? undefined
-        : _GetsEffective / _PaysEffective,
-      _CumulativeRate: _GetsSum / _PaysSum,
-      _I_Spend_Capped: _GetsSumCapped?.toNumber(),
-      _I_Get_Capped: _PaysSumCapped?.toNumber(),
-      _CumulativeRate_Cap: _CumulativeRate_Cap?.toNumber(),
-      _Capped
-    })
+    // log ({_GetsSum, _PaysSum})
 
-    if (ParserData.options?.rates?.toLowerCase().trim() === 'to') {
-      if (!isNaN(b._ExchangeRate)) {
-        b._ExchangeRate = 1 / b._ExchangeRate
+    if (_GetsSum > 0 && _PaysSum > 0) {
+      Object.assign(b, {
+        // _PaysEffective,
+        // _GetsEffective,
+        _I_Spend: _GetsSum,
+        _I_Get: _PaysSum,
+        _ExchangeRate: _PaysEffective === 0
+          ? undefined
+          : _GetsEffective / _PaysEffective,
+        _CumulativeRate: _GetsSum / _PaysSum,
+        _I_Spend_Capped: _GetsSumCapped?.toNumber(),
+        _I_Get_Capped: _PaysSumCapped?.toNumber(),
+        _CumulativeRate_Cap: _CumulativeRate_Cap?.toNumber(),
+        _Capped
+      })
+
+      if (ParserData.options?.rates?.toLowerCase().trim() === 'to') {
+        if (!isNaN(b._ExchangeRate)) {
+          b._ExchangeRate = 1 / b._ExchangeRate
+        }
+        if (!isNaN(b._CumulativeRate_Cap)) {
+          b._CumulativeRate_Cap = 1 / b._CumulativeRate_Cap
+        }
+        if (!isNaN(b._CumulativeRate)) {
+          b._CumulativeRate = 1 / b._CumulativeRate
+        }
       }
-      if (!isNaN(b._CumulativeRate_Cap)) {
-        b._CumulativeRate_Cap = 1 / b._CumulativeRate_Cap
-      }
-      if (!isNaN(b._CumulativeRate)) {
-        b._CumulativeRate = 1 / b._CumulativeRate
-      }
+    } else {
+      // One side of the offer is empty
+      return a
     }
 
     return a.concat(b)
-
   }, <ParseResultVerbose[]>[]).filter(line => {
     let _return = true
 
