@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 const log = Debug('orderbook:parser')
 
 export interface ParseResult {
-  _ExchangeRate: number
+  _ExchangeRate?: number
   _I_Spend_Capped: number
   _I_Get_Capped: number
   _CumulativeRate: number
@@ -15,9 +15,9 @@ export interface ParseResult {
 }
 
 export interface ParseResultVerbose extends ParseResult {
-  account: string
-  _I_Spend: number
-  _I_Get: number
+  account?: string
+  _I_Spend?: number
+  _I_Get?: number
   TakerGets?: number
   TakerGetsFunded?: number
   TakerPays?: number
@@ -128,8 +128,8 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
       ? Number(b.TakerPays)
       : Number(b.TakerPaysFunded)
 
-    const _GetsSum = _GetsEffective + (i > 0 ? a[i - 1]._I_Spend : 0)
-    const _PaysSum = _PaysEffective + (i > 0 ? a[i - 1]._I_Get : 0)
+    const _GetsSum = _GetsEffective + (i > 0 ? a[i - 1]?._I_Spend || 0 : 0)
+    const _PaysSum = _PaysEffective + (i > 0 ? a[i - 1]?._I_Get || 0 : 0)
 
     const _cmpField = bookType === BookType.SOURCE
       ? '_I_Spend_Capped'
@@ -207,8 +207,8 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
       })
 
       if (ParserData.options?.rates?.toLowerCase().trim() === 'to') {
-        if (!isNaN(b._ExchangeRate)) {
-          b._ExchangeRate = 1 / b._ExchangeRate
+        if (!isNaN(b?._ExchangeRate || 0)) {
+          b._ExchangeRate = 1 / (b?._ExchangeRate || 0)
         }
         if (!isNaN(b._CumulativeRate_Cap)) {
           b._CumulativeRate_Cap = 1 / b._CumulativeRate_Cap

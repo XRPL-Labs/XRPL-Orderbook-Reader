@@ -1,5 +1,4 @@
 import {Trade, Offer} from '../types/XrplObjects'
-import type Client from 'rippled-ws-client'
 
 export enum RatesInCurrency {
   to = 'to',
@@ -25,11 +24,20 @@ export interface Options {
   maxBookLines?: number // Default: 500
 }
 
-export interface Params {
+interface _Params {
   trade: Trade,
   options: Options
-  method: Client['send']
 }
+
+export interface RippledWsClient extends _Params { 
+  method: any
+}
+
+export interface XrplClient extends _Params { 
+  client: any
+}
+
+export type Params = RippledWsClient | XrplClient
 
 export interface Result {
   rate: number

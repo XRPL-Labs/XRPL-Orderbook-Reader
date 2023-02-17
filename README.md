@@ -39,10 +39,49 @@ provided, the entire instance will be updated.
 
 Available options [here](https://github.com/XRPL-Labs/XRPL-Orderbook-Reader/blob/38be170007366095bd078713ecbb65684420539d/src/types/Reader.ts#L17).
 
-Please note that the Params require a `send` method to be present. The `send` method passed
+### Client
+This lib. requires a connection to an XRPL node. There are two supported clients:
+
+#### Preferred: `xrpl-client` - https://www.npmjs.com/package/xrpl-client
+
+You can pass the entire class instance of `xrpl-client` to the Params object. You
+pass the class as `client` property.
+
+```
+new LiquidityCheck({
+  <...>,
+  client: new XrplClient()
+})
+```
+
+#### Deprecated: `rippled-ws-client` - https://www.npmjs.com/package/rippled-ws-client
+
+You can pass the `send` method of `rippled-ws-client` to the Params object as `method` property.
+
+```
+new LiquidityCheck({
+  <...>,
+  method: RippledWsClientInstance.send
+})
+```
+
+#### Custom WebSocket/... implementation
+
+You can pass a `send` method to the Params object. The `send` method passed
 to the Params should take an object with a `command` for rippled and return a `Promise`
-that will resolve to contain requested order book lines. This has been tested with
-[rippled-ws-client](https://www.npmjs.com/package/rippled-ws-client)
+that will resolve to contain requested order book lines. You pass a function as `method` property.
+
+```
+new LiquidityCheck({
+  <...>,
+  method: (JsonRequestWithCommand) => {
+    return new Promise(resolve) {
+      // Custom implementation to fetch the book results
+    }
+  }
+})
+```
+
 
 ## Sample in JS (not TS) environment(s):
 

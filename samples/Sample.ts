@@ -1,5 +1,5 @@
 import Debug from 'debug'
-import Client from 'rippled-ws-client'
+const { XrplClient } = require('xrpl-client')
 import {
   LiquidityCheck,
   Params as LiquidityCheckParams,
@@ -12,7 +12,7 @@ const main = async () => {
   /**
    * XRPL Connection
    */
-  const Connection = await new Client('wss://xrpl.ws')
+  const Connection = new XrplClient()
   Connection.on('error', (e: Error | string) => log(`XRPL Error`, e))
 
   /**
@@ -39,7 +39,7 @@ const main = async () => {
       // includeBookData: true,
       // verboseBookData: true,
     },
-    method: Connection.send
+    client: Connection
   }
 
   log(Params.trade)

@@ -1,4 +1,5 @@
-import Client from 'rippled-ws-client'
+const { XrplClient } = require('xrpl-client')
+
 import {
   LiquidityCheck,
   Params as LiquidityCheckParams,
@@ -14,7 +15,7 @@ const options = {
 }
 
 const main = async () => {
-  const Connection = await new Client('wss://xrpl.ws')
+  const Connection = new XrplClient()
   Connection.on('error', (e: Error | string) => console.log(`XRPL Error`, e))
 
   const pairs = [
@@ -42,7 +43,7 @@ const main = async () => {
               to: {currency: p.currency, issuer: p.issuer}
             },
             options,
-            method: Connection.send
+            client: Connection
           }
 
           const Check = new LiquidityCheck(Params)

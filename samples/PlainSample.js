@@ -6,12 +6,13 @@
  */
 
 const Debug = require('debug')
-const Client = require('rippled-ws-client')
-const {LiquidityCheck} = require('xrpl-orderbook-reader')
+const { XrplClient } = require('xrpl-client')
+// const {LiquidityCheck} = require('xrpl-orderbook-reader') // Elsewhere
+const {LiquidityCheck} = require('../') // Here (in this folder)
 const log = Debug('orderbook')
 
 const main = async () => {
-  const Connection = await new Client('wss://xrpl.ws')
+  const Connection = new XrplClient()
   Connection.on('error', e => log(`XRPL Error`, e))
 
   const Check = new LiquidityCheck({
@@ -33,7 +34,7 @@ const main = async () => {
       maxSlippagePercentage: 4,
       maxSlippagePercentageReverse: 5
     },
-    method: Connection.send
+    client: Connection
   })
   const Liquidity = await Check.get()
 

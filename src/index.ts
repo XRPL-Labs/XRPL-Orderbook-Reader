@@ -4,7 +4,9 @@ import {
   Result as LiquidityCheckResult,
   RatesInCurrency,
   Options,
-  Errors
+  Errors,
+  XrplClient,
+  RippledWsClient
 } from './types/Reader'
 import {Offer} from './types/XrplObjects'
 import {
@@ -45,9 +47,20 @@ class LiquidityCheck {
     this.BookReverse = this.fetchBook(false)
   }
 
+  async fetchXrplData<T> (request: Record<string, any>): Promise<T> {
+    if ((this.Params as RippledWsClient)?.method) {
+      return (this.Params as RippledWsClient).method(request) as T
+    }
+    if ((this.Params as XrplClient)?.client && (this.Params as XrplClient).client?.ready && (this.Params as XrplClient).client?.send) {
+      return (this.Params as XrplClient).client.send(request) as T
+    }
+
+    throw new Error('Params missing either `method` (to call, e.g. xrpl-ws-client) or `client` (with send-method, e.g. xrpl-client)')
+  }
+
   async fetchBook (requestedDirection: boolean = true): Promise<Offer[]> {
     log(`Get book_offers for ${requestedDirection ? 'requested' : 'reversed'} direction`)
-    const book = await this.Params.method<BookOffersResponse>({
+    const book = await this.fetchXrplData<BookOffersResponse>({
       command: 'book_offers',
       taker_gets: requestedDirection
         ? this.Params.trade.to

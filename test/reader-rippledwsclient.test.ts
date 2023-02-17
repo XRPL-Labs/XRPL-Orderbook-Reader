@@ -1,17 +1,18 @@
 import Client from 'rippled-ws-client'
+
 import {
   LiquidityCheck,
   RatesInCurrency,
   Errors
 } from '../src'
 
-let Connection: Client
+let RippledWsClientConnection: Client
 
 const trade = {
   from: {
     currency: 'XRP'
   },
-  amount: 1000000,
+  amount: 10000,
   to: {
     currency: 'USD',
     issuer: 'rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq'
@@ -22,13 +23,14 @@ const options = {
 }
 
 beforeAll(async () => {
-  Connection = await new Client('wss://xrpl.ws')
-  Connection.on('error', (e: Error | string) => console.log(`XRPL Error`, e))
-  return Connection
+  RippledWsClientConnection = await new Client('wss://xrplcluster.com')
+  RippledWsClientConnection.on('error', (e: Error | string) => console.log(`XRPL Error`, e))
+  return RippledWsClientConnection
 })
 
 afterAll(async () => {
-  return Connection.close()
+  await RippledWsClientConnection.close()
+  return new Promise(resolve => setTimeout(() => resolve(null), 100))
 })
 
 describe('XRPL Orderbook Reader', () => {
@@ -36,7 +38,7 @@ describe('XRPL Orderbook Reader', () => {
     const Check = new LiquidityCheck({
       trade,
       options,
-      method: Connection.send
+      method: RippledWsClientConnection.send
     })
     const Liquidity = await Check.get()
 
@@ -52,7 +54,7 @@ describe('XRPL Orderbook Reader', () => {
         maxSlippagePercentage: 0.0001,
         maxSlippagePercentageReverse: 0.0001
       },
-      method: Connection.send
+      method: RippledWsClientConnection.send
     })
     const Liquidity = await Check.get()
 
@@ -70,7 +72,7 @@ describe('XRPL Orderbook Reader', () => {
         ...options,
         maxBookLines: 1
       },
-      method: Connection.send
+      method: RippledWsClientConnection.send
     })
     const Liquidity = await Check.get()
 
@@ -86,7 +88,7 @@ describe('XRPL Orderbook Reader', () => {
       options: {
         timeoutSeconds: 0.0001
       },
-      method: Connection.send
+      method: RippledWsClientConnection.send
     })
 
     return expect(new Promise(resolve => {
