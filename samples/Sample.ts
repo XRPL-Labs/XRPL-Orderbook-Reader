@@ -33,16 +33,17 @@ const main = async () => {
       rates: RatesInCurrency.to,
       timeoutSeconds: 10,
       maxSpreadPercentage: 4,
-      maxSlippagePercentage: 3,
+      maxSlippagePercentage: 2,
       maxSlippagePercentageReverse: 3,
-      // maxBookLines: 500,
-      // includeBookData: true,
-      // verboseBookData: true,
+      maxBookLines: 250,
+      includeBookData: true,
+      verboseBookData: true,
     },
     client: Connection
   }
 
   log(Params.trade)
+
   const Check = new LiquidityCheck(Params)
   const Liquidity = await Check.get()
 
