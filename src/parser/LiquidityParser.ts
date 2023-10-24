@@ -4,6 +4,7 @@ import {RatesInCurrency as Rates} from '../types/Reader'
 import BigNumber from 'bignumber.js'
 
 const log = Debug('orderbook:parser')
+const currentRippleEpoch = Math.round(Number(new Date()) / 1000 - 946684800)
 
 export interface ParseResult {
   _ExchangeRate?: number
@@ -96,7 +97,17 @@ function LiquidityParser (ParserData: ParserOptions): ParseResult[] | ParseResul
   const tradeAmount = new BigNumber(ParserData.trade.amount)
 
   let linesPresent = 0
-  const data: ParseResultVerbose[] = bookData.map((offer: Offer) => {
+  const data: ParseResultVerbose[] = bookData.filter((offer: Offer) => {
+    if (offer?.Expiration) {
+      if (offer.Expiration < currentRippleEpoch) {
+        log('Ignoring expired offer', offer, currentRippleEpoch)
+        return false
+      }
+    }
+
+    // No expiration or expiration and still valid.
+    return true
+  }).map((offer: Offer) => {
     return Object.assign(<ParseResultVerbose>{}, {
       account: offer.Account,
       TakerGets: parseAmount(offer.TakerGets),
