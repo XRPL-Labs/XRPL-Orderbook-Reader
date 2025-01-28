@@ -1,6 +1,6 @@
 {
   "name": "xrpl-orderbook-reader",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Parse XRPL Order Book results into effective liquidity based exchange prices",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
