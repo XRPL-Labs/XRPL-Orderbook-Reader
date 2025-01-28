@@ -93,6 +93,7 @@ class LiquidityCheck {
     const book0Amount = new BigNumber(books[0].filter(l => l._Capped !== undefined).slice(-1)[0]._I_Spend_Capped)
     const book1Amount = new BigNumber(books[1].filter(l => l._Capped !== undefined).slice(-1)[0]._I_Get_Capped)
 
+
     const firstBookLine = books[0][0]
     const finalBookLine = books[0].filter(l => l._Capped !== undefined).slice(-1)[0]
     const startRate = new BigNumber(
@@ -115,11 +116,16 @@ class LiquidityCheck {
      * Now check for errors
      */
 
-    if (!book0Amount.eq(tradeAmount)) {
+
+    // console.log('tradeAmount', tradeAmount.decimalPlaces(16).toFixed(10))
+    // console.log('book0Amount', book0Amount.decimalPlaces(16).toFixed(10))
+    // console.log('book1Amount', book1Amount.decimalPlaces(16).toFixed(10))
+
+    if (!book0Amount.decimalPlaces(16).eq(tradeAmount.decimalPlaces(16))) {
       errors.push(Errors.REQUESTED_LIQUIDITY_NOT_AVAILABLE)
     }
 
-    if (!book1Amount.eq(tradeAmount)) {
+    if (!book1Amount.decimalPlaces(16).eq(tradeAmount.decimalPlaces(16))) {
       errors.push(Errors.REVERSE_LIQUIDITY_NOT_AVAILABLE)
     }
 
